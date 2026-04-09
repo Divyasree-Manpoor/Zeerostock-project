@@ -115,18 +115,19 @@ async function search() {
 
   let res = await fetch(url);
   let data = await res.json();
+  data = data.products;
 
   let results = document.getElementById("results");
   results.innerHTML = "";
 
-  if (data.length === 0) {
+  if (!data || data.length === 0) {
     results.innerHTML = "<p class='no-results'>No results found</p>";
     return;
   }
 
   data.forEach(item => {
     let li = document.createElement("li");
-    li.innerHTML = `<span>${item.name}</span> <span>₹${item.price}</span>`;
+    li.innerHTML = `<span>${item.title}</span> <span>₹${item.price}</span>`;
     results.appendChild(li);
   });
 }
