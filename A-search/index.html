@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inventory Search</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #5a67d8;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    li {
+      background: #f7f7f7;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .no-results {
+      text-align: center;
+      color: red;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>🔍 Inventory Search</h2>
+
+  <input id="search" placeholder="Search product">
+  
+  <select id="category">
+    <option value="">All Categories</option>
+    <option value="Electronics">Electronics</option>
+    <option value="Furniture">Furniture</option>
+    <option value="Fashion">Fashion</option>
+  </select>
+
+  <input id="minPrice" type="number" placeholder="Min Price">
+  <input id="maxPrice" type="number" placeholder="Max Price">
+
+  <button onclick="search()">Search</button>
+
+  <ul id="results"></ul>
+</div>
+
+<script>
+async function search() {
+  let q = document.getElementById("search").value;
+  let category = document.getElementById("category").value;
+  let minPrice = document.getElementById("minPrice").value;
+  let maxPrice = document.getElementById("maxPrice").value;
+
+  let url = `http://localhost:5000/search?q=${q}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+
+  let res = await fetch(url);
+  let data = await res.json();
+
+  let results = document.getElementById("results");
+  results.innerHTML = "";
+
+  if (data.length === 0) {
+    results.innerHTML = "<p class='no-results'>No results found</p>";
+    return;
+  }
+
+  data.forEach(item => {
+    let li = document.createElement("li");
+    li.innerHTML = `<span>${item.name}</span> <span>₹${item.price}</span>`;
+    results.appendChild(li);
+  });
+}
+</script>
+
+</body>
+</html>
