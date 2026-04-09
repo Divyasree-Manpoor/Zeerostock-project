@@ -111,7 +111,7 @@ async function search() {
   let minPrice = document.getElementById("minPrice").value;
   let maxPrice = document.getElementById("maxPrice").value;
 
-  let url = `http://localhost:5000/search?q=${q}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+  let url = `https://dummyjson.com/products/search?q=${q}`;
 
   let res = await fetch(url);
   let data = await res.json();
